@@ -9,9 +9,10 @@ How to run the code.
 1. Clone a local version.
 2. Ensure you have NodeJs 
 3. Navigate to the marsRover repository on your terminal
-4. I've added a script for you to run, simply type 'npm start'
-5. This should get the API running. You can edit the API as it's running, and it'll automatically pick up your changes as soon as you save
-6. http://localhost:3000/v1
+4. Install packages by typing 'npm install'
+5. I've added a script for you to run, simply type 'npm start'
+6. This should get the API running. You can edit the API as it's running, and it'll automatically pick up your changes as soon as you save
+7. http://localhost:3000/v1
 
 # Endpoints and what objects to pass
 So far I've only built two endpoints, one GET and one POST
