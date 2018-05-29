@@ -9,7 +9,12 @@ export default class Rover {
         this.response = new Responses();
         this.grid = [100, 100],
         this.surroundingRovers = [],
-        this.rover = {}
+        this.rover = {
+            location: {
+                x: "",
+                y: ""
+            }
+        }
     }
 
 

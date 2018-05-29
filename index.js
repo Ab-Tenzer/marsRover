@@ -11,5 +11,6 @@ app.use("/v1", routes)
 
 
 var server = app.listen(3000, function () {
+    console.log("Running Mars Rover Tech Challenge API \n")
     console.log("Listening on port %s...", server.address().port);
 });
