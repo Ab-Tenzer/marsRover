@@ -8,13 +8,14 @@ export default class Rover {
     constructor() {
         this.response = new Responses();
         this.grid = [100, 100],
-        this.surroundingRovers = [],
-        this.rover = {
-            location: {
-                x: "",
-                y: ""
+            this.surroundingRovers = [],
+            this.rover = {
+                location: {
+                    x: 0,
+                    y: 0
+                },
+                direction: 'N'
             }
-        }
     }
 
 
@@ -64,11 +65,15 @@ export default class Rover {
                 )
             }
 
+            let output = []
             body.rovers.forEach((rover, index) => {
                 this.moveRover(rover, index)
+                output.push(this.formatOutput(this.rover))
+
             })
 
-            return this.response.success(200, 'Rover(s) deployed successfully', null)
+            return this.response.success(200, 'Rover(s) deployed successfully. Expected output: ', output)
+
         } catch (error) {
             console.log('deployRovers: method error', error)
             return this.response.error(
@@ -163,13 +168,13 @@ export default class Rover {
 
                 if (!/^[a-zA-Z]/i.test(rover.instructions)) {
                     result = 'Instruction command entered is not a letter for the Rover positioned at ' + i++
-                } else{
+                } else {
                     if (rover.instructions.toLowerCase().includes('m')) {
 
                     } else if (rover.instructions.toLowerCase().includes('l')) {
-    
+
                     } else if (rover.instructions.toLowerCase().includes('r')) {
-    
+
                     } else {
                         //Still needs better validation
                         result = 'Instruction command entered entered is incorrect, please enter either M, L, R for the Rover positioned at ' + i++
@@ -187,6 +192,116 @@ export default class Rover {
         this.rover.location.x = positionValues[0]
         this.rover.location.y = positionValues[1]
         this.rover.direction = positionValues[2]
+
+        //Commands
+        this.rover.commands = rover.instructions
+
+        for (let index = 0; index < this.rover.commands.length; index++) {
+            const command = this.rover.commands[index];
+
+            this.takeCommand(command)
+        }
+
+    }
+
+    takeCommand = (command) => {
+        command = command.toLowerCase()
+        switch (command) {
+            case 'm':
+                this.moveForward()
+                break;
+            case 'l':
+                this.turnLeft()
+                break;
+            case 'r':
+                this.turnRight()
+                break;
+            default:
+                break;
+        }
+    }
+
+    moveForward = () => {
+        let direction = this.rover.direction.toLowerCase()
+        switch (direction) {
+            case 'n':
+                if (this.grid[1] > this.rover.location.y) {
+                    this.rover.location.y++
+                }
+                break;
+            case 's':
+                if (this.rover.location.y - 1 >= 0) {
+                    this.rover.location.y--
+                }
+                break;
+            case 'e':
+                if (this.grid[0] > this.rover.location.x) {
+                    this.rover.location.x++
+                }
+                break;
+            case 'w':
+                if (this.rover.location.x - 1 >= 0) {
+                    this.rover.location.x--
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    turnLeft = () => {
+        let direction = this.rover.direction.toLowerCase()
+        switch (direction) {
+            case 'n':
+                this.rover.direction = 'W'
+                break;
+            case 's':
+                this.rover.direction = 'E'
+                break;
+            case 'e':
+                this.rover.direction = 'N'
+                break;
+            case 'w':
+                this.rover.direction = 'S'
+                break;
+
+            default:
+                break;
+        }
+    }
+    turnRight = () => {
+        let direction = this.rover.direction.toLowerCase()
+        switch (direction) {
+            case 'n':
+                this.rover.direction = 'E'
+                break;
+            case 's':
+                this.rover.direction = 'W'
+                break;
+            case 'e':
+                this.rover.direction = 'S'
+                break;
+            case 'w':
+                this.rover.direction = 'N'
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    formatOutput = (rover) => {
+
+        let x = ''
+        let y = ''
+        let direction = ''
+
+        x = rover.location.x.toString()
+        y = rover.location.y.toString()
+        direction = rover.direction
+        let output = x + " " + y + " " + direction
+
+
+        return output;
     }
 
 }
